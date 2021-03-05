@@ -28,32 +28,39 @@ public class BowlingAlleyRunner {
     }
 
     public void run() throws Exception {
-        List<Player> players =
-                Arrays.asList(scanner.nextLine().split(" ")).stream()
-                        .map(playerName -> new Player(playerName))
-                        .collect(Collectors.toList());
-        Integer numPlayers = players.size();
+        Integer numGames = scanner.nextInt();
+        scanner.nextLine();
+        for (int gameNo = 0; gameNo < numGames; gameNo++){
+            List<Player> players =
+                    Arrays.asList(scanner.nextLine().split(" ")).stream()
+                            .map(playerName -> new Player(playerName))
+                            .collect(Collectors.toList());
+            Integer numPlayers = players.size();
 
-        Integer laneId = scanner.nextInt();
+            Integer laneId = scanner.nextInt();
 
-        Game game = bowlingAlleyService.bookLane(laneId, players);
+            Game game = bowlingAlleyService.bookLane(laneId, players);
 
-        for (int i = 0; i < MAX_FRAMES; i++) {
-            Map<Player, List<Integer>> playerToPinsMap = new HashMap<>();
-            Map<Player, Integer> additionalBall1Map = new HashMap<>();
-            Map<Player, Integer> additionalBall2Map = new HashMap<>();
-            for (int j = 0; j < 2 * numPlayers; j += 2) {
-                playerToPinsMap.put(players.get(j / 2), new ArrayList<>());
-                playerToPinsMap.get(players.get(j / 2)).add(scanner.nextInt());
-                playerToPinsMap.get(players.get(j / 2)).add(scanner.nextInt());
-            }
-            if (i == MAX_FRAMES - 1) {
-                for (int j = 0; j < numPlayers; j++) {
-                    additionalBall1Map.put(players.get(j), scanner.nextInt());
-                    additionalBall2Map.put(players.get(j), scanner.nextInt());
+            for (int i = 0; i < MAX_FRAMES; i++) {
+                Map<Player, List<Integer>> playerToPinsMap = new HashMap<>();
+                Map<Player, Integer> additionalBall1Map = new HashMap<>();
+                Map<Player, Integer> additionalBall2Map = new HashMap<>();
+                for (int j = 0; j < 2 * numPlayers; j += 2) {
+                    playerToPinsMap.put(players.get(j / 2), new ArrayList<>());
+                    playerToPinsMap.get(players.get(j / 2)).add(scanner.nextInt());
+                    playerToPinsMap.get(players.get(j / 2)).add(scanner.nextInt());
                 }
+                if (i == MAX_FRAMES - 1) {
+                    for (int j = 0; j < numPlayers; j++) {
+                        additionalBall1Map.put(players.get(j), scanner.nextInt());
+                        additionalBall2Map.put(players.get(j), scanner.nextInt());
+                    }
+                }
+                scanner.nextLine();
+                gameService.playFrame(game, playerToPinsMap, additionalBall1Map, additionalBall2Map);
             }
-            gameService.playFrame(game, playerToPinsMap, additionalBall1Map, additionalBall2Map);
+
+            bowlingAlleyService.releaseLane(laneId);
         }
     }
 }
