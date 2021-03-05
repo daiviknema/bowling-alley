@@ -4,6 +4,7 @@ import com.daiviknema.bowlingalley.exception.InvalidFrameException;
 
 import java.util.List;
 
+import static com.daiviknema.bowlingalley.constant.Constants.INVALID_BALL;
 import static com.daiviknema.bowlingalley.constant.Constants.NUM_PINS;
 
 public class Frame {

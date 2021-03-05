@@ -45,6 +45,21 @@ public class GameService {
         System.out.println(" ======= ");
     }
 
+    private Integer getPinsForPlayerAndFrame(
+            final Game game, final Player player, final Integer frameIdx) {
+        final Integer pins1 =
+                game.getPlayerToFramesMap().get(player).get(frameIdx).getPins().get(0)
+                                == INVALID_BALL
+                        ? 0
+                        : game.getPlayerToFramesMap().get(player).get(frameIdx).getPins().get(0);
+        final Integer pins2 =
+                game.getPlayerToFramesMap().get(player).get(frameIdx).getPins().get(1)
+                                == INVALID_BALL
+                        ? 0
+                        : game.getPlayerToFramesMap().get(player).get(frameIdx).getPins().get(1);
+        return pins1 + pins2;
+    }
+
     public void playFrame(
             final Game game,
             final Map<Player, List<Integer>> playerToPinsMap,
@@ -95,8 +110,7 @@ public class GameService {
                 if (currFrame != null && currFrame.getPins().get(1) != INVALID_BALL)
                     validPins.add(currFrame.getPins().get(1));
 
-                Integer oldScore =
-                        game.getFrameWisePlayerToScoreMaps().get(currentFrameIdx - 2).get(player);
+                Integer oldScore = getPinsForPlayerAndFrame(game, player, currentFrameIdx - 2);
                 if (prevPrevFrame.getStrike()) {
                     game.getFrameWisePlayerToScoreMaps()
                             .get(currentFrameIdx - 2)
@@ -104,6 +118,31 @@ public class GameService {
                 } else if (prevPrevFrame.getSpare()) {
                     game.getFrameWisePlayerToScoreMaps()
                             .get(currentFrameIdx - 2)
+                            .put(player, oldScore + validPins.get(0));
+                }
+            }
+
+            if (currentFrameIdx > 0) {
+                Frame prevFrame = game.getPlayerToFramesMap().get(player).get(currentFrameIdx - 1);
+                Frame currFrame = game.getPlayerToFramesMap().get(player).get(currentFrameIdx);
+                List<Integer> validPins = new ArrayList<>();
+                if (currFrame != null && currFrame.getPins().get(0) != INVALID_BALL)
+                    validPins.add(currFrame.getPins().get(0));
+                if (currFrame != null && currFrame.getPins().get(1) != INVALID_BALL)
+                    validPins.add(currFrame.getPins().get(1));
+
+                Integer oldScore = getPinsForPlayerAndFrame(game, player, currentFrameIdx - 1);
+                if (prevFrame.getStrike()) {
+                    game.getFrameWisePlayerToScoreMaps()
+                            .get(currentFrameIdx - 1)
+                            .put(
+                                    player,
+                                    oldScore
+                                            + validPins.get(0)
+                                            + (validPins.size() > 1 ? validPins.get(1) : 0));
+                } else if (prevFrame.getSpare()) {
+                    game.getFrameWisePlayerToScoreMaps()
+                            .get(currentFrameIdx - 1)
                             .put(player, oldScore + validPins.get(0));
                 }
             }
@@ -119,8 +158,7 @@ public class GameService {
                 if (additionalBall1Map.get(player) != INVALID_BALL)
                     validPins.add(additionalBall1Map.get(player));
 
-                Integer oldScore =
-                        game.getFrameWisePlayerToScoreMaps().get(currentFrameIdx - 1).get(player);
+                Integer oldScore = getPinsForPlayerAndFrame(game, player, currentFrameIdx - 1);
                 if (prevFrame.getStrike()) {
                     game.getFrameWisePlayerToScoreMaps()
                             .get(currentFrameIdx - 1)
