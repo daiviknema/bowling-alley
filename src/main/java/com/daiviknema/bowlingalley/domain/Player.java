@@ -2,6 +2,11 @@ package com.daiviknema.bowlingalley.domain;
 
 import java.util.UUID;
 
+/**
+ * Domain class representing a bowling player
+ *
+ * @author daivik
+ */
 public class Player {
     String playerId;
     String playerName;

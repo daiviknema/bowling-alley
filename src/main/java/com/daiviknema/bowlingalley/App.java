@@ -2,7 +2,12 @@ package com.daiviknema.bowlingalley;
 
 import com.daiviknema.bowlingalley.runner.BowlingAlleyRunner;
 
-/** Hello world! */
+/**
+ * App class. Calls the bowling alley runner. When we receive instructions/game data over REST calls
+ * or from some external source, we can easily switch out the runner for a different one
+ *
+ * @author daivik
+ */
 public class App {
     private static BowlingAlleyRunner bowlingAlleyRunner = new BowlingAlleyRunner();
 

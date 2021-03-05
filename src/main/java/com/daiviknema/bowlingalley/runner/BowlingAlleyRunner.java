@@ -12,8 +12,14 @@ import java.util.stream.Collectors;
 
 import static com.daiviknema.bowlingalley.constant.Constants.MAX_FRAMES;
 
+/**
+ * Runner class for blowing alley.
+ *
+ * @author daivik
+ */
 public class BowlingAlleyRunner {
 
+    // reads game data from this file
     private static final File inputFile = new File("input1.txt");
     private static Scanner scanner = null;
     private final BowlingAlleyService bowlingAlleyService = new BowlingAlleyService();
@@ -27,10 +33,15 @@ public class BowlingAlleyRunner {
         }
     }
 
+    /**
+     * Main method for running the game
+     *
+     * @throws Exception
+     */
     public void run() throws Exception {
         Integer numGames = scanner.nextInt();
         scanner.nextLine();
-        for (int gameNo = 0; gameNo < numGames; gameNo++){
+        for (int gameNo = 0; gameNo < numGames; gameNo++) {
             List<Player> players =
                     Arrays.asList(scanner.nextLine().split(" ")).stream()
                             .map(playerName -> new Player(playerName))
@@ -39,6 +50,7 @@ public class BowlingAlleyRunner {
 
             Integer laneId = scanner.nextInt();
 
+            // block a lane and create the game object
             Game game = bowlingAlleyService.bookLane(laneId, players);
 
             for (int i = 0; i < MAX_FRAMES; i++) {
@@ -57,9 +69,13 @@ public class BowlingAlleyRunner {
                     }
                 }
                 scanner.nextLine();
-                gameService.playFrame(game, playerToPinsMap, additionalBall1Map, additionalBall2Map);
+
+                // call to playFrame steps through the game
+                gameService.playFrame(
+                        game, playerToPinsMap, additionalBall1Map, additionalBall2Map);
             }
 
+            // release lane once the game is complete
             bowlingAlleyService.releaseLane(laneId);
         }
     }

@@ -4,12 +4,30 @@ import com.daiviknema.bowlingalley.exception.GameInstantiationFailedException;
 
 import java.util.*;
 
+/**
+ * Domain class representing a bowling game
+ *
+ * @author daivik
+ */
 public class Game {
+    // maximum number of frames in the game (defaults to MAX_FRAMES)
     private Integer maxFrames;
+
+    // Unique game ID
     private String gameId;
+
+    // List of players playing the game
     private List<Player> players;
+
+    // Lane of bowling alley on which game is being played
     private Lane lane;
+
+    // Map maintaining the list of Frames for each player
     private Map<Player, List<Frame>> playerToFramesMap;
+
+    // Map to maintain the frame-wise scores for all players.
+    // This serves as a history of the game (ie. how the scores changed throughout the duration of
+    // the game)
     private List<Map<Player, Integer>> frameWisePlayerToScoreMaps;
 
     private Game(GameBuilder builder) {
@@ -21,6 +39,9 @@ public class Game {
         this.frameWisePlayerToScoreMaps = builder.frameWisePlayerToScoreMaps;
     }
 
+    /**
+     * Since Game is a complex object, we have created a builder for ease of object instantiation
+     */
     public static class GameBuilder {
         private Integer maxFrames;
         private String gameId;

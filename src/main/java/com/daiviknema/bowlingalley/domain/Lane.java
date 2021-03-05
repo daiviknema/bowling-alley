@@ -1,10 +1,15 @@
 package com.daiviknema.bowlingalley.domain;
 
+/**
+ * Domain class representing a Lane
+ *
+ * @author daivik
+ */
 public class Lane {
 
-    private Integer laneId;     // unique ID for lane
-    private Boolean isActive;   // true if there is currently a game being played on this lane
-    private Game activeGame;    // fetch the active game. If lane is empty, then returns null
+    private Integer laneId; // unique ID for lane
+    private Boolean isActive; // true if there is currently a game being played on this lane
+    private Game activeGame; // fetch the active game. If lane is empty, then returns null
 
     public Lane(final Integer laneId) {
         this.laneId = laneId;

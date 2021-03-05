@@ -6,7 +6,19 @@ import com.daiviknema.bowlingalley.exception.LaneNotFoundException;
 
 import java.util.List;
 
+/**
+ * Service to interact with lanes
+ *
+ * @author daivik
+ */
 public class LaneService {
+    /**
+     * Given a lane ID, fetch the corresponding lane if it is not occupied
+     *
+     * @param laneId
+     * @return
+     * @throws LaneNotFoundException
+     */
     public Lane getLaneById(final Integer laneId) throws LaneNotFoundException {
         BowlingAlley bowlingAlley = BowlingAlley.getInstance();
         List<Lane> lanes = bowlingAlley.getLanes();

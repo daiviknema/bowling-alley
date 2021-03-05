@@ -4,11 +4,17 @@ import com.daiviknema.bowlingalley.exception.InvalidFrameException;
 
 import java.util.List;
 
-import static com.daiviknema.bowlingalley.constant.Constants.INVALID_BALL;
 import static com.daiviknema.bowlingalley.constant.Constants.NUM_PINS;
 
+/**
+ * Domain class representing a frame
+ *
+ * @author daivik
+ */
 public class Frame {
-    public Frame(final List<Integer> pins, final Integer additionalBall1, final Integer additionalBall2) throws InvalidFrameException {
+    public Frame(
+            final List<Integer> pins, final Integer additionalBall1, final Integer additionalBall2)
+            throws InvalidFrameException {
         if (pins == null || pins.size() != 2) {
             throw new InvalidFrameException("Incorrect number of pins in the frame");
         }
@@ -19,11 +25,21 @@ public class Frame {
         this.additionalBall2 = additionalBall2;
     }
 
+    // represents the number of pins knocked down by a player (list is of size two - each list
+    // element represents a ball)
     private List<Integer> pins;
+
+    // whether the frame is a strike or not
     private Boolean isStrike;
+
+    // whether the frame is a spare or not
     private Boolean isSpare;
-    private Integer additionalBall1;
+
+    // In case of the final/pre-final frame, we might need to have additional balls
     private Integer additionalBall2;
+
+    // In case of the final/pre-final frame, we might need to have additional balls
+    private Integer additionalBall1;
 
     public List<Integer> getPins() {
         return pins;
